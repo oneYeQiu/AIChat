@@ -60,9 +60,7 @@ export const audioAPI = {
   upload: (blob) => {
     const form = new FormData()
     form.append('file', blob, 'voice.webm')
-    return api.post('/audio/upload', form, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    return api.post('/audio/upload', form) // 不手动设置 Content-Type，让 Axios 自动添加 boundary
   }
 }
 

@@ -71,7 +71,7 @@ public class AiBotService {
     }
 
     public List<Long> getOnlineUserIds() {
-        return onlineUsers.values().stream().distinct().toList();
+        return new ArrayList<>(onlineUsers.values().stream().distinct().toList());
     }
 
     /**

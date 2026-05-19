@@ -2,6 +2,7 @@ package com.aichat.controller;
 
 import com.aichat.service.MessageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -25,16 +26,18 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/audio")
 @RequiredArgsConstructor
+@Slf4j
 public class AudioController {
 
     private final MessageService messageService;
 
     /** 音频文件存储目录 */
-    private final Path audioDir = Paths.get("audio");
+    private final Path audioDir = Paths.get(System.getProperty("user.dir"), "audio");
 
     @PostConstruct
     public void init() throws IOException {
         Files.createDirectories(audioDir);
+        log.info("音频存储目录: {}", audioDir.toAbsolutePath());
     }
 
     /**
