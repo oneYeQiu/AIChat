@@ -1,0 +1,69 @@
+server:
+  port: 8080
+
+spring:
+  # MySQL 数据库
+  datasource:
+    url: jdbc:mysql://localhost:3306/aichat?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  # Spring AI 配置 - DeepSeek (OpenAI 兼容接口)
+  ai:
+    openai:
+      api-key: ${DEEPSEEK_API_KEY:your-api-key-here}
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.8
+
+# ===== MySQL 配置（生产环境请取消注释并注释掉上面的H2配置）=====
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/aichat?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: your-password
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    database-platform: org.hibernate.dialect.MySQLDialect
+
+app:
+  jwt:
+    secret: aichat-jwt-secret-key-2024-please-change-in-production
+    expiration-ms: 86400000  # 24小时
+
+  ai:
+    # AI 主动消息配置
+    active-message:
+      enabled: true
+      # 定时任务间隔（毫秒）
+      interval-ms: 10000
+      # 每个用户每天最多接收的主动消息数
+      daily-limit: 99
+      # 夜间静默开始时间（24表示禁用）
+      quiet-start-hour: 24
+      # 夜间静默结束时间
+      quiet-end-hour: 0
+
+    # AI 机器人人设 prompt
+    persona: |
+      你是一个名叫"小A"的AI朋友，你具有以下特点：
+      - 性格温暖、有趣、偶尔有点小幽默
+      - 像一个真实的朋友一样聊天，不要太机械或正式
+      - 回复简洁自然，通常1-3句话，不要长篇大论
+      - 偶尔用emoji表情增加亲和力
+      - 可以关心对方、分享有趣的见闻、开小玩笑
+      - 不要暴露自己是AI，表现得像一个真实的人类朋友
+      - 称呼对方为"你"即可，不需要刻意使用用户名
